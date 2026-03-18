@@ -5,9 +5,6 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -74,9 +71,8 @@ async def startup_event():
                 )
             ''')
             await db.close()
-            print("Database tables initialized successfully")
         except Exception as e:
-            print(f"Startup DB init error: {e}")
+            print(f"Startup DB init error (non-fatal on Vercel): {e}")
 
 @api_router.get("/")
 async def root():
@@ -87,6 +83,8 @@ async def create_status_check(input: StatusCheckCreate):
     status_obj = StatusCheck(client_name=input.client_name)
     db = await get_db()
     try:
+        # Ensure table exists (handles Vercel cold starts)
+        await db.execute('CREATE TABLE IF NOT EXISTS status_checks (id TEXT PRIMARY KEY, client_name TEXT, timestamp TEXT)')
         await db.execute(
             'INSERT INTO status_checks (id, client_name, timestamp) VALUES ($1, $2, $3)',
             status_obj.id, status_obj.client_name, status_obj.timestamp.isoformat()
@@ -121,6 +119,8 @@ async def create_lead(input: LeadCreate):
     lead_obj = Lead(**input.model_dump())
     db = await get_db()
     try:
+        # Ensure table exists (handles Vercel cold starts)
+        await db.execute('CREATE TABLE IF NOT EXISTS leads (id TEXT PRIMARY KEY, name TEXT, phone TEXT, email TEXT, message TEXT, inquiry_type TEXT, created_at TEXT)')
         await db.execute('''
             INSERT INTO leads (id, name, phone, email, message, inquiry_type, created_at)
             VALUES ($1, $2, $3, $4, $5, $6, $7)

@@ -5,13 +5,14 @@ import {
   Droplets, Shield, FlaskConical, Trash2,
   Building2, Stethoscope, TestTubes, Truck,
   Award, Clock, DollarSign, HeadphonesIcon,
-  Send, ArrowRight, Menu, X, MapPin } from
-'lucide-react';
+  Send, ArrowRight, Menu, X, MapPin
+} from
+  'lucide-react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8000";
-const API = `${BACKEND_URL}/api`;
+// Use relative URL on production (Vercel), localhost for dev
+const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://127.0.0.1:8000/api';
 
 // Image URLs from design guidelines
 const IMAGES = {
@@ -96,10 +97,10 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen &&
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="md:hidden py-4 border-t">
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="md:hidden py-4 border-t">
 
             <nav className="flex flex-col gap-4">
               <button onClick={() => scrollToSection('products')} className="text-[#475569] hover:text-[#1e3a5f] font-medium py-2 text-left">Products</button>
@@ -216,34 +217,34 @@ const HeroSection = () => {
 // Products Section
 const ProductsSection = () => {
   const products = [
-  {
-    title: "Blood Collection Range",
-    icon: <Droplets size={32} />,
-    items: ["Blood Collection Tubes", "EDTA / Plain / Fluoride Tubes", "Vacutainers", "Syringes & Needles"],
-    image: IMAGES.samples,
-    color: "from-red-500/10 to-red-500/5"
-  },
-  {
-    title: "Safety & Hygiene",
-    icon: <Shield size={32} />,
-    items: ["Disposable Gloves", "Face Masks", "Alcohol Swabs"],
-    image: IMAGES.products2,
-    color: "from-blue-500/10 to-blue-500/5"
-  },
-  {
-    title: "Testing & Sample Handling",
-    icon: <FlaskConical size={32} />,
-    items: ["Micropipette Tips", "Glass Slides & Cover Slips", "Test Tubes", "Centrifuge Tubes"],
-    image: IMAGES.products1,
-    color: "from-teal-500/10 to-teal-500/5"
-  },
-  {
-    title: "Sample & Waste Management",
-    icon: <Trash2 size={32} />,
-    items: ["Urine Containers", "Specimen Containers", "Biohazard Bags", "Sharps Disposal Containers"],
-    image: IMAGES.products1,
-    color: "from-amber-500/10 to-amber-500/5"
-  }];
+    {
+      title: "Blood Collection Range",
+      icon: <Droplets size={32} />,
+      items: ["Blood Collection Tubes", "EDTA / Plain / Fluoride Tubes", "Vacutainers", "Syringes & Needles"],
+      image: IMAGES.samples,
+      color: "from-red-500/10 to-red-500/5"
+    },
+    {
+      title: "Safety & Hygiene",
+      icon: <Shield size={32} />,
+      items: ["Disposable Gloves", "Face Masks", "Alcohol Swabs"],
+      image: IMAGES.products2,
+      color: "from-blue-500/10 to-blue-500/5"
+    },
+    {
+      title: "Testing & Sample Handling",
+      icon: <FlaskConical size={32} />,
+      items: ["Micropipette Tips", "Glass Slides & Cover Slips", "Test Tubes", "Centrifuge Tubes"],
+      image: IMAGES.products1,
+      color: "from-teal-500/10 to-teal-500/5"
+    },
+    {
+      title: "Sample & Waste Management",
+      icon: <Trash2 size={32} />,
+      items: ["Urine Containers", "Specimen Containers", "Biohazard Bags", "Sharps Disposal Containers"],
+      image: IMAGES.products1,
+      color: "from-amber-500/10 to-amber-500/5"
+    }];
 
 
   return (
@@ -270,11 +271,11 @@ const ProductsSection = () => {
           viewport={{ once: true }}>
 
           {products.map((product, index) =>
-          <motion.div
-            key={index}
-            variants={fadeInUp}
-            className="group relative bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden card-hover"
-            data-testid={`product-card-${index}`}>
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className="group relative bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden card-hover"
+              data-testid={`product-card-${index}`}>
 
               <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
               <div className="relative p-8">
@@ -286,11 +287,11 @@ const ProductsSection = () => {
                     <h3 className="text-xl font-bold text-[#0f172a] mb-4">{product.title}</h3>
                     <ul className="space-y-2">
                       {product.items.map((item, i) =>
-                    <li key={i} className="flex items-center gap-2 text-[#475569]">
+                        <li key={i} className="flex items-center gap-2 text-[#475569]">
                           <CheckCircle size={16} className="text-[#10b981] flex-shrink-0" />
                           {item}
                         </li>
-                    )}
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -324,10 +325,10 @@ const ProductsSection = () => {
 // Why Choose Us Section
 const WhyChooseSection = () => {
   const features = [
-  { icon: <Award size={32} />, title: "High Quality", desc: "Medical-Grade Material" },
-  { icon: <TestTubes size={32} />, title: "Accurate Testing", desc: "Safe Testing Support" },
-  { icon: <Shield size={32} />, title: "Durable Packaging", desc: "Hygienic & Secure" },
-  { icon: <DollarSign size={32} />, title: "Best Price", desc: "Competitive Market Rate" }];
+    { icon: <Award size={32} />, title: "High Quality", desc: "Medical-Grade Material" },
+    { icon: <TestTubes size={32} />, title: "Accurate Testing", desc: "Safe Testing Support" },
+    { icon: <Shield size={32} />, title: "Durable Packaging", desc: "Hygienic & Secure" },
+    { icon: <DollarSign size={32} />, title: "Best Price", desc: "Competitive Market Rate" }];
 
 
   return (
@@ -351,11 +352,11 @@ const WhyChooseSection = () => {
           viewport={{ once: true }}>
 
           {features.map((feature, index) =>
-          <motion.div
-            key={index}
-            variants={fadeInUp}
-            className="bg-white p-8 rounded-2xl text-center shadow-sm hover:shadow-lg transition-all card-hover"
-            data-testid={`feature-card-${index}`}>
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className="bg-white p-8 rounded-2xl text-center shadow-sm hover:shadow-lg transition-all card-hover"
+              data-testid={`feature-card-${index}`}>
 
               <div className="inline-flex bg-[#0891b2]/10 p-4 rounded-2xl text-[#0891b2] mb-6">
                 {feature.icon}
@@ -378,7 +379,7 @@ const WhyChooseSection = () => {
               <h3 className="text-2xl font-bold text-[#0f172a] mb-6">Wholesale & Retail Available</h3>
               <ul className="space-y-4">
                 {["High Quality Medical-Grade Material", "Accurate & Safe Testing Support", "Durable Packaging", "Best Competitive Price in Market"].map((item, i) =>
-                <li key={i} className="flex items-center gap-3 text-[#475569]">
+                  <li key={i} className="flex items-center gap-3 text-[#475569]">
                     <div className="bg-[#10b981]/10 p-1 rounded-full">
                       <CheckCircle size={16} className="text-[#10b981]" />
                     </div>
@@ -400,17 +401,17 @@ const WhyChooseSection = () => {
 // Comparison Section
 const ComparisonSection = () => {
   const problems = [
-  "Infection risk",
-  "Sample contamination",
-  "Inaccurate test results",
-  "Frequent stock issues"];
+    "Infection risk",
+    "Sample contamination",
+    "Inaccurate test results",
+    "Frequent stock issues"];
 
 
   const solutions = [
-  "Safe sample handling",
-  "Hygienic workflow",
-  "Accurate diagnostics",
-  "Smooth lab operations"];
+    "Safe sample handling",
+    "Hygienic workflow",
+    "Accurate diagnostics",
+    "Smooth lab operations"];
 
 
   return (
@@ -441,7 +442,7 @@ const ComparisonSection = () => {
             </h3>
             <ul className="space-y-4">
               {problems.map((item, i) =>
-              <li key={i} className="flex items-center gap-3 text-red-700">
+                <li key={i} className="flex items-center gap-3 text-red-700">
                   <XCircle size={18} className="text-red-400 flex-shrink-0" />
                   {item}
                 </li>
@@ -463,7 +464,7 @@ const ComparisonSection = () => {
             </h3>
             <ul className="space-y-4">
               {solutions.map((item, i) =>
-              <li key={i} className="flex items-center gap-3 text-green-700">
+                <li key={i} className="flex items-center gap-3 text-green-700">
                   <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
                   {item}
                 </li>
@@ -479,11 +480,11 @@ const ComparisonSection = () => {
 // Who We Serve Section
 const ServicesSection = () => {
   const clients = [
-  { icon: <FlaskConical size={40} />, title: "Pathology Labs" },
-  { icon: <Building2 size={40} />, title: "Hospitals" },
-  { icon: <Stethoscope size={40} />, title: "Clinics" },
-  { icon: <TestTubes size={40} />, title: "Diagnostic Centers" },
-  { icon: <Truck size={40} />, title: "Medical Distributors" }];
+    { icon: <FlaskConical size={40} />, title: "Pathology Labs" },
+    { icon: <Building2 size={40} />, title: "Hospitals" },
+    { icon: <Stethoscope size={40} />, title: "Clinics" },
+    { icon: <TestTubes size={40} />, title: "Diagnostic Centers" },
+    { icon: <Truck size={40} />, title: "Medical Distributors" }];
 
 
   return (
@@ -507,11 +508,11 @@ const ServicesSection = () => {
           viewport={{ once: true }}>
 
           {clients.map((client, index) =>
-          <motion.div
-            key={index}
-            variants={fadeInUp}
-            className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center text-white hover:bg-white/20 transition-all"
-            data-testid={`client-card-${index}`}>
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center text-white hover:bg-white/20 transition-all"
+              data-testid={`client-card-${index}`}>
 
               <div className="inline-flex text-[#0891b2] mb-4">
                 {client.icon}
@@ -538,11 +539,11 @@ const ServicesSection = () => {
 // Ordering Process Section
 const OrderingSection = () => {
   const steps = [
-  { number: "1", title: "Click Get Best Price", desc: "Start your order" },
-  { number: "2", title: "Share Your Details", desc: "Name & Mobile Number" },
-  { number: "3", title: "Expert Callback", desc: "Our senior lab expert calls you" },
-  { number: "4", title: "Confirm Order", desc: "Finalize quantity & pricing" },
-  { number: "5", title: "Fast Delivery", desc: "Quick doorstep delivery" }];
+    { number: "1", title: "Click Get Best Price", desc: "Start your order" },
+    { number: "2", title: "Share Your Details", desc: "Name & Mobile Number" },
+    { number: "3", title: "Expert Callback", desc: "Our senior lab expert calls you" },
+    { number: "4", title: "Confirm Order", desc: "Finalize quantity & pricing" },
+    { number: "5", title: "Fast Delivery", desc: "Quick doorstep delivery" }];
 
 
   return (
@@ -566,16 +567,16 @@ const OrderingSection = () => {
           viewport={{ once: true }}>
 
           {steps.map((step, index) =>
-          <motion.div
-            key={index}
-            variants={fadeInUp}
-            className="relative text-center"
-            data-testid={`step-${index}`}>
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className="relative text-center"
+              data-testid={`step-${index}`}>
 
               {/* Connector line */}
               {index < steps.length - 1 &&
-            <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-[#0891b2]/30" />
-            }
+                <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-[#0891b2]/30" />
+              }
               <div className="relative">
                 <div className="step-number inline-flex w-16 h-16 rounded-full items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg">
                   {step.number}
@@ -602,7 +603,7 @@ const OrderingSection = () => {
             <p className="text-[#475569] mb-6">We ensure timely delivery of all your lab supplies with proper handling and hygienic packaging.</p>
             <ul className="space-y-3">
               {["Pan-India delivery available", "Bulk order support", "Track your shipment"].map((item, i) =>
-              <li key={i} className="flex items-center gap-2 text-[#475569]">
+                <li key={i} className="flex items-center gap-2 text-[#475569]">
                   <CheckCircle size={18} className="text-[#10b981]" />
                   {item}
                 </li>
@@ -636,7 +637,7 @@ const OfferSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">FREE Lab Product Consultation</h2>
           <div className="flex flex-wrap justify-center gap-6 mb-8">
             {["Bulk Order Support", "Best Price Assurance", "Fast Response Team"].map((item, i) =>
-            <div key={i} className="flex items-center gap-2">
+              <div key={i} className="flex items-center gap-2">
                 <CheckCircle className="text-[#10b981]" size={20} />
                 <span>{item}</span>
               </div>
@@ -680,7 +681,8 @@ const ContactSection = () => {
     setLoading(true);
     try {
       await axios.post(`${API}/leads`, {
-        ...formData,
+        name: formData.name,
+        phone: formData.phone,
         inquiry_type: 'contact_form'
       });
       toast.success('Thank you! Our expert will contact you shortly.');
@@ -760,7 +762,7 @@ const ContactSection = () => {
 
             <form onSubmit={handleSubmit} className="bg-slate-50 rounded-2xl p-8" data-testid="contact-form">
               <h3 className="text-xl font-bold text-[#0f172a] mb-6">Request a Callback</h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-[#475569] mb-2 font-medium">Your Name *</label>
@@ -797,9 +799,9 @@ const ContactSection = () => {
                   data-testid="form-submit">
 
                   {loading ?
-                  'Submitting...' :
+                    'Submitting...' :
 
-                  <>
+                    <>
                       <Send size={20} />
                       Get In Touch
                     </>
