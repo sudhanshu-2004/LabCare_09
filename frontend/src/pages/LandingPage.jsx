@@ -681,6 +681,7 @@ const ContactSection = () => {
         .from('leads')
         .insert([
           {
+            id: crypto.randomUUID(), // Automatically generates a unique ID
             name: formData.name,
             phone: formData.phone,
             inquiry_type: 'contact_form',
@@ -690,7 +691,7 @@ const ContactSection = () => {
 
       if (error) {
         console.error('Supabase error:', error);
-        toast.error('Something went wrong. Please check if Supabase RLS policies are set up correctly.');
+        toast.error(`Database error: ${error.message}`);
       } else {
         toast.success('Thank you! Our expert will contact you shortly.');
         setFormData({ name: '', phone: '' });
