@@ -8,11 +8,8 @@ import {
   Send, ArrowRight, Menu, X, MapPin
 } from
   'lucide-react';
-import axios from 'axios';
 import { Toaster, toast } from 'sonner';
-
-// Use relative URL on production (Vercel), localhost for dev
-const API = process.env.NODE_ENV === 'production' ? '/api' : 'http://127.0.0.1:8000/api';
+import { supabase } from '../lib/supabaseClient';
 
 // Image URLs from design guidelines
 const IMAGES = {
@@ -680,13 +677,24 @@ const ContactSection = () => {
 
     setLoading(true);
     try {
-      await axios.post(`${API}/leads`, {
-        name: formData.name,
-        phone: formData.phone,
-        inquiry_type: 'contact_form'
-      });
-      toast.success('Thank you! Our expert will contact you shortly.');
-      setFormData({ name: '', phone: '' });
+      const { error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            name: formData.name,
+            phone: formData.phone,
+            inquiry_type: 'contact_form',
+            created_at: new Date().toISOString()
+          }
+        ]);
+
+      if (error) {
+        console.error('Supabase error:', error);
+        toast.error('Something went wrong. Please check if Supabase RLS policies are set up correctly.');
+      } else {
+        toast.success('Thank you! Our expert will contact you shortly.');
+        setFormData({ name: '', phone: '' });
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
       toast.error('Something went wrong. Please try again or call us directly.');
